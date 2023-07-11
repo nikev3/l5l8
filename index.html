@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Lynn Schirmer for CFA 2023">
+    <title>My To-do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="bulma.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>My To-do List<br />
+            <span id="current-date"></span>
+        </h1>
+    </header>
+    <main>
+        <form id="task-input">
+            <label for="task" class="label">New Task</label>
+            <input type="text" id="task" class="input" required>
+            <button type="submit" class="button is-primary">Add</button>
+        </form>
+        <section>
+            <button id="clear" class="button is-danger">Clear All</button>
+            <ol id="to-dos">
+
+            </ol>
+        </section>
+    </main>
+    <script>
+        const form = document.querySelector('#task-input');
+        const taskInput = document.querySelector('#task');
+        const list = document.querySelector('#to-dos');
+        const showDate = document.querySelector('#current-date');
+
+
+
+        /* Exercise 1: Get the current date and time 
+        1. Create a new Date object and assign it a variable.
+        2. Show the date and time in the console.
+        */
+
+
+        /* Exercise 2: Show the current date in the header 
+        1. To clean up the date formatting, run the .toLocaleDateString() method on the date and pass it 'en-us', plus an object with format options for weekday, year, month, and day. Choose options from: long, short, or numeric.
+        2. Use the textContent property to show the formatted date in the #current-date span tag (there is already a variable assigned to the tag).
+        */
+
+
+
+
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            let newTodo = taskInput.value;
+            let newListItem = document.createElement('li');
+            /* Exercise 3: Add a time stamp to each todo item
+            1. Create a new date object and run the .toLocaleString() method on it
+            2. In the template literal value for newListItem.innerHTML, add a p tag with class time-stamp to show the timeStamp */
+
+
+
+            newListItem.innerHTML = `${newTodo}`;
+            newListItem.addEventListener('click', done);
+            list.appendChild(newListItem);
+            taskInput.value = "";
+
+        })
+
+        /* Exercise 4 Save the to-do list in local storage
+        1. Create a function called saveTodoList
+        2. Use the .children property to get an HTML collection list of the <li> tags inside the <ol> (a variable has already been assigned to the <ol>, scroll up to see it.)
+        3. Use the .length property to get the total number of children <li> tags
+        4. Use the .setItem method to store the total number of to-dos in local storage.
+        5. Inside the form event listener function, call saveTodoList. Make some to-dos and look in the code inspector to see if the total is saved.
+        */
+
+        /* Exercise 5 Save the individual to-dos
+        Inside function saveTodoList:
+        1. Use Array.from() to convert the HTML collection list into an array.
+        Use .forEach() to iterate through the array getting both the values and index numbers,
+            example:
+            Array.from(todoItems).forEach(function (item, index) {
+            });
+        6. Create a unique name for each item with 'todo-'+index
+        7. Use item.innerHTML to get the content of each <li>  
+        8. Use the setItem method to store each todo 
+        Make some to-dos and look in the code inspector to see if they are saved.
+        */
+
+
+
+
+
+
+
+
+
+
+
+        /* Exercise 6 Show the saved todos when the page loads
+        1. Create a function called showTodoList
+        2. Use the .getItem() method to get the total number of todos.
+        3. If total is greater than 1:
+         Subtract 1 from total, then use a for loop to iterate through the total number of todos
+        5. Inside the for loop, use getItem to get each todo by its name key: 'todo-' +item
+        6. Show the todos in the console.
+        7. Use this code to make the to-dos show up on the page, make sure to edit the varname for the to-do content:
+                    let todoItem = document.createElement('li');
+                    todoItem.innerHTML = //your getItem varName;
+                    todoItem.addEventListener('click', done);
+                    list.appendChild(todoItem);
+        */
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Exercise 7  - Extra credit - clear all todos
+       1. Assign a varable to the #clear button
+       2. Add a click event listener to it
+       3. Pass it an arrow function
+       4. Inside the arrow function, use the clear method to remove all todos
+       5. Use location.reload() to refresh the page
+       */
+
+
+
+
+
+
+
+
+        function done() {
+            //let id = this.id;
+            //localStorage.removeItem(id);
+
+            this.style.backgroundColor = '#c1c1c1';
+            this.style.textDecoration = 'line-through';
+        }
+
+    </script>
+</body>
+
+</html>
