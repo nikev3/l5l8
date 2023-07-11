@@ -30,9 +30,7 @@
         </form>
         <section>
             <button id="clear" class="button is-danger">Clear All</button>
-            <ol id="to-dos">
-
-            </ol>
+            <ol id="to-dos"></ol>
         </section>
     </main>
     <script>
@@ -41,41 +39,40 @@
         const list = document.querySelector('#to-dos');
         const showDate = document.querySelector('#current-date');
 
-
-
         /* Exercise 1: Get the current date and time 
         1. Create a new Date object and assign it a variable.
         2. Show the date and time in the console.
         */
 
+        const currentDate = new Date();
+        console.log(currentDate);
 
         /* Exercise 2: Show the current date in the header 
         1. To clean up the date formatting, run the .toLocaleDateString() method on the date and pass it 'en-us', plus an object with format options for weekday, year, month, and day. Choose options from: long, short, or numeric.
         2. Use the textContent property to show the formatted date in the #current-date span tag (there is already a variable assigned to the tag).
         */
 
-
-
-
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = currentDate.toLocaleDateString('en-us', options);
+        showDate.textContent = formattedDate;
 
         form.addEventListener('submit', function (event) {
             event.preventDefault();
             let newTodo = taskInput.value;
             let newListItem = document.createElement('li');
+
             /* Exercise 3: Add a time stamp to each todo item
             1. Create a new date object and run the .toLocaleString() method on it
             2. In the template literal value for newListItem.innerHTML, add a p tag with class time-stamp to show the timeStamp */
-
-
-
-            newListItem.innerHTML = `${newTodo}`;
+            
+            const timeStamp = new Date().toLocaleString();
+            newListItem.innerHTML = `${newTodo}<p class="time-stamp">${timeStamp}</p>`;
             newListItem.addEventListener('click', done);
             list.appendChild(newListItem);
             taskInput.value = "";
-
         })
 
-        /* Exercise 4 Save the to-do list in local storage
+        /* Exercise 4: Save the to-do list in local storage
         1. Create a function called saveTodoList
         2. Use the .children property to get an HTML collection list of the <li> tags inside the <ol> (a variable has already been assigned to the <ol>, scroll up to see it.)
         3. Use the .length property to get the total number of children <li> tags
@@ -83,7 +80,27 @@
         5. Inside the form event listener function, call saveTodoList. Make some to-dos and look in the code inspector to see if the total is saved.
         */
 
-        /* Exercise 5 Save the individual to-dos
+        function saveTodoList() {
+            const todoItems = list.children;
+            const totalTodos = todoItems.length;
+            localStorage.setItem('totalTodos', totalTodos);
+        }
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            let newTodo = taskInput.value;
+            let newListItem = document.createElement('li');
+
+            const timeStamp = new Date().toLocaleString();
+            newListItem.innerHTML = `${newTodo}<p class="time-stamp">${timeStamp}</p>`;
+            newListItem.addEventListener('click', done);
+            list.appendChild(newListItem);
+            taskInput.value = "";
+
+            saveTodoList();
+        })
+
+        /* Exercise 5: Save the individual to-dos
         Inside function saveTodoList:
         1. Use Array.from() to convert the HTML collection list into an array.
         Use .forEach() to iterate through the array getting both the values and index numbers,
@@ -96,21 +113,22 @@
         Make some to-dos and look in the code inspector to see if they are saved.
         */
 
+        function saveTodoList() {
+            const todoItems = Array.from(list.children);
+            todoItems.forEach(function (item, index) {
+                const todoName = `todo-${index}`;
+                const todoContent = item.innerHTML;
+                localStorage.setItem(todoName, todoContent);
+            });
+            const totalTodos = todoItems.length;
+            localStorage.setItem('totalTodos', totalTodos);
+        }
 
-
-
-
-
-
-
-
-
-
-        /* Exercise 6 Show the saved todos when the page loads
+        /* Exercise 6: Show the saved todos when the page loads
         1. Create a function called showTodoList
         2. Use the .getItem() method to get the total number of todos.
         3. If total is greater than 1:
-         Subtract 1 from total, then use a for loop to iterate through the total number of todos
+        Subtract 1 from total, then use a for loop to iterate through the total number of todos
         5. Inside the for loop, use getItem to get each todo by its name key: 'todo-' +item
         6. Show the todos in the console.
         7. Use this code to make the to-dos show up on the page, make sure to edit the varname for the to-do content:
@@ -120,40 +138,42 @@
                     list.appendChild(todoItem);
         */
 
+        function showTodoList() {
+            const totalTodos = parseInt(localStorage.getItem('totalTodos'));
+            if (totalTodos > 0) {
+                for (let i = 0; i < totalTodos; i++) {
+                    const todoName = `todo-${i}`;
+                    const todoContent = localStorage.getItem(todoName);
+                    console.log(todoContent);
 
+                    let todoItem = document.createElement('li');
+                    todoItem.innerHTML = todoContent;
+                    todoItem.addEventListener('click', done);
+                    list.appendChild(todoItem);
+                }
+            }
+        }
 
+        showTodoList();
 
+        /* Exercise 7: Extra credit - clear all todos
+        1. Assign a variable to the #clear button
+        2. Add a click event listener to it
+        3. Pass it an arrow function
+        4. Inside the arrow function, use the clear method to remove all todos
+        5. Use location.reload() to refresh the page
+        */
 
-
-
-
-
-
-
-
-        /* Exercise 7  - Extra credit - clear all todos
-       1. Assign a varable to the #clear button
-       2. Add a click event listener to it
-       3. Pass it an arrow function
-       4. Inside the arrow function, use the clear method to remove all todos
-       5. Use location.reload() to refresh the page
-       */
-
-
-
-
-
-
-
+        const clearButton = document.querySelector('#clear');
+        clearButton.addEventListener('click', () => {
+            localStorage.clear();
+            location.reload();
+        });
 
         function done() {
-            //let id = this.id;
-            //localStorage.removeItem(id);
-
             this.style.backgroundColor = '#c1c1c1';
             this.style.textDecoration = 'line-through';
         }
-
     </script>
 </body>
 
